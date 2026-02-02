@@ -155,8 +155,28 @@ class _TaskBoardState extends State<TaskBoard> {
                               padding: const EdgeInsets.only(bottom: 8.0),
                               child: TaskCard(
                                 task: task,
-                                onEdit: () {},
-                                onDelete: () {},
+                                onEdit: () {_navigateToTaskForm(context, task: task);},
+                                onDelete: () {showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text('Delete Task'),
+                                      content: const Text('Are you sure you want to delete this task?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(context), 
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            _deleteTask(task); 
+                                            Navigator.pop(context); 
+                                          },
+                                          child: const Text('Delete', style: TextStyle(color: Colors.red)),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
                               ),
                             );
                           },
@@ -223,10 +243,8 @@ class _TaskBoardState extends State<TaskBoard> {
   // ==============================================================================
   // Call this method when user clicks the delete button
   void _deleteTask(Task task) {
-    setState(() {  // Tell Flutter to rebuild UI after deletion
-      // removeWhere() removes all tasks that match the condition
-      // In this case, remove the task with matching ID
-      tasks.removeWhere((t) => t.id == task.id);
-    });
-  }
+  setState(() {
+    tasks.remove(task);
+  });
+}
 }

@@ -10,8 +10,10 @@
 
 import 'package:flutter/material.dart';  // Flutter UI components
 import '../models/task.dart';            // Our Task model
-import '../data/sample_tasks.dart';      // The 6 sample tasks
-import 'task_form.dart';                  // Screen B (form screen)
+import '../data/sample_tasks.dart';
+import '../widgets/stat_box.dart';
+import '../widgets/task_card.dart';
+import 'task_form.dart';
 
 // TaskBoard - The main screen widget
 // StatefulWidget = A widget that CAN change over time (tasks can be added/edited/deleted)
@@ -25,10 +27,13 @@ class TaskBoard extends StatefulWidget {
 
 // _TaskBoardState - This holds the data that can change
 // The underscore "_" means this class is private (only used in this file)
+enum FilterOption { all, highPriority, done }
+
 class _TaskBoardState extends State<TaskBoard> {
   // Our task list - stored in memory (RAM), not in a database
   // This list starts with 6 sample tasks from sample_tasks.dart
   List<Task> tasks = getSampleTasks();
+  FilterOption selectedFilter = FilterOption.all;
 
   // build() - This creates the UI (what users see on screen)
   // This gets called every time setState() is called
@@ -44,20 +49,122 @@ class _TaskBoardState extends State<TaskBoard> {
       
       // Body - The main content area
       // TODO: Replace this placeholder with actual UI (Sprint Summary, Task List, etc.)
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Task Board - Screen A',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            // Show how many tasks we have
-            Text('Total tasks: ${tasks.length}'),
-            const SizedBox(height: 20),
-            const Text('UI will be implemented by team members'),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 8),
+              Builder(builder: (context) {
+                final todoCount = tasks.where((t) => t.status == TaskStatus.toDo).length;
+                final inProgressCount = tasks.where((t) => t.status == TaskStatus.inProgress).length;
+                final doneCount = tasks.where((t) => t.status == TaskStatus.done).length;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(child: StatBox(label: 'To Do', count: todoCount)),
+                        const SizedBox(width: 8),
+                        Expanded(child: StatBox(label: 'In Progress', count: inProgressCount)),
+                        const SizedBox(width: 8),
+                        Expanded(child: StatBox(label: 'Done', count: doneCount)),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Total Tasks', style: TextStyle(fontSize: 14, color: Colors.black54)),
+                                  const SizedBox(height: 6),
+                                  Text('${tasks.length}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Text('Completed', style: TextStyle(fontSize: 14, color: Colors.black54)),
+                                  const SizedBox(height: 6),
+                                  Text('$doneCount', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  const Text('Remaining', style: TextStyle(fontSize: 14, color: Colors.black54)),
+                                  const SizedBox(height: 6),
+                                  Text('${todoCount + inProgressCount}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                        ],
+                      );
+                    }),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8,
+                      children: [
+                        ChoiceChip(
+                          label: const Text('All'),
+                          selected: selectedFilter == FilterOption.all,
+                          onSelected: (_) => setState(() => selectedFilter = FilterOption.all),
+                        ),
+                        ChoiceChip(
+                          label: const Text('High Priority'),
+                          selected: selectedFilter == FilterOption.highPriority,
+                          onSelected: (_) => setState(() => selectedFilter = FilterOption.highPriority),
+                        ),
+                        ChoiceChip(
+                          label: const Text('Done'),
+                          selected: selectedFilter == FilterOption.done,
+                          onSelected: (_) => setState(() => selectedFilter = FilterOption.done),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Builder(builder: (context) {
+                      final filteredTasks = selectedFilter == FilterOption.all
+                          ? tasks
+                          : selectedFilter == FilterOption.highPriority
+                              ? tasks.where((t) => t.priority == TaskPriority.high).toList()
+                              : tasks.where((t) => t.status == TaskStatus.done).toList();
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.55,
+                        child: ListView.builder(
+                          itemCount: filteredTasks.length,
+                          itemBuilder: (context, index) {
+                            final task = filteredTasks[index];
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: TaskCard(
+                                task: task,
+                                onEdit: () {},
+                                onDelete: () {},
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }),
+            ],
+          ),
         ),
       ),
       

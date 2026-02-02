@@ -63,5 +63,14 @@ List<Task> getSampleTasks() {
       priority: TaskPriority.medium,
       status: TaskStatus.done,  // This one is completed!
     ),
+
+    // Testing Task
+    Task(
+      id: '7',
+      title: 'Setup CI/CD pipeline',
+      description: 'Configure automated testing and deployment pipeline using GitHub Actions for continuous integration.',
+      priority: TaskPriority.medium,
+      status: TaskStatus.done,  // This one is completed!
+    ),
   ];
 }

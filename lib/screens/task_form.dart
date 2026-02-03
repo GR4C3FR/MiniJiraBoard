@@ -76,8 +76,13 @@ class _TaskFormState extends State<TaskForm> {
       // App Bar - Top bar with title and back button
       appBar: AppBar(
         // Show different title depending on mode
-        title: Text(isEditMode ? 'Edit Task' : 'Add Task'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(
+          isEditMode ? 'Edit Task' : 'Add Task',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: const Color(0xFF0052CC),
+        foregroundColor: Colors.white,
+        elevation: 2,
       ),
 
       // Body - Main content area
@@ -141,7 +146,7 @@ class _TaskFormState extends State<TaskForm> {
 
                 // Priority dropdown
                 DropdownButtonFormField<TaskPriority>(
-                  value: _selectedPriority,
+                  initialValue: _selectedPriority,
                   decoration: const InputDecoration(
                     labelText: 'Priority',
                     border: OutlineInputBorder(),
@@ -171,7 +176,7 @@ class _TaskFormState extends State<TaskForm> {
 
                 // Status dropdown
                 DropdownButtonFormField<TaskStatus>(
-                  value: _selectedStatus,
+                  initialValue: _selectedStatus,
                   decoration: const InputDecoration(
                     labelText: 'Status',
                     border: OutlineInputBorder(),
@@ -205,7 +210,12 @@ class _TaskFormState extends State<TaskForm> {
                   icon: Icon(isEditMode ? Icons.update : Icons.save),
                   label: Text(isEditMode ? 'Update Task' : 'Save Task'),
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    backgroundColor: const Color(0xFF0052CC),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),

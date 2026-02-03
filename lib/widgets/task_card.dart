@@ -6,7 +6,12 @@ class TaskCard extends StatelessWidget {
   final VoidCallback onEdit;
   final VoidCallback onDelete;
 
-  const TaskCard({super.key, required this.task, required this.onEdit, required this.onDelete});
+  const TaskCard({
+    super.key,
+    required this.task,
+    required this.onEdit,
+    required this.onDelete,
+  });
 
   Color _priorityColor(TaskPriority p) {
     switch (p) {
@@ -22,17 +27,22 @@ class TaskCard extends StatelessWidget {
   Color _statusColor(TaskStatus s) {
     switch (s) {
       case TaskStatus.toDo:
-        return Colors.grey;
+        return const Color(0xFF5E6C84);
       case TaskStatus.inProgress:
-        return Colors.blueAccent;
+        return const Color(0xFF0052CC);
       case TaskStatus.done:
-        return Colors.green;
+        return const Color(0xFF00875A);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(color: Colors.grey[200]!, width: 1),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -44,51 +54,113 @@ class TaskCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     task.title,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF172B4D),
+                    ),
                   ),
                 ),
-                IconButton(onPressed: onEdit, icon: const Icon(Icons.edit, size: 20)),
-                IconButton(onPressed: onDelete, icon: const Icon(Icons.delete, size: 20)),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                const Text('Priority:', style: TextStyle(fontSize: 12, color: Colors.black54)),
-                const SizedBox(width: 6),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: _priorityColor(task.priority).withOpacity(0.12),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    task.priority.displayName,
-                    style: TextStyle(fontSize: 12, color: _priorityColor(task.priority), fontWeight: FontWeight.w600),
-                  ),
+                IconButton(
+                  onPressed: onEdit,
+                  icon: const Icon(Icons.edit_outlined, size: 20),
+                  color: const Color(0xFF0052CC),
+                  tooltip: 'Edit',
                 ),
-                const SizedBox(width: 8),
-                const Text('Status:', style: TextStyle(fontSize: 12, color: Colors.black54)),
-                const SizedBox(width: 6),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: _statusColor(task.status).withOpacity(0.18),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    task.status.displayName,
-                    style: TextStyle(fontSize: 12, color: _statusColor(task.status), fontWeight: FontWeight.w600),
-                  ),
+                IconButton(
+                  onPressed: onDelete,
+                  icon: const Icon(Icons.delete_outline, size: 20),
+                  color: Colors.red[400],
+                  tooltip: 'Delete',
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             Text(
               task.description,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 14, color: Colors.black87),
+              style: const TextStyle(
+                fontSize: 14,
+                color: Color(0xFF5E6C84),
+                height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    color: _priorityColor(task.priority).withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(
+                      color: _priorityColor(task.priority).withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.flag,
+                        size: 14,
+                        color: _priorityColor(task.priority),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        task.priority.displayName,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: _priorityColor(task.priority),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    color: _statusColor(task.status).withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(
+                      color: _statusColor(task.status).withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        task.status == TaskStatus.done
+                            ? Icons.check_circle
+                            : task.status == TaskStatus.inProgress
+                            ? Icons.hourglass_bottom
+                            : Icons.radio_button_unchecked,
+                        size: 14,
+                        color: _statusColor(task.status),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        task.status.displayName,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: _statusColor(task.status),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),

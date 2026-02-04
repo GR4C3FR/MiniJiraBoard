@@ -1,34 +1,23 @@
-// ==============================================================================
-// SAMPLE TASKS - Initial data for testing
-// ==============================================================================
-// This file provides 6 pre-made tasks so we have something to display
-// when the app first opens. No database needed!
-
 import '../models/task.dart';
 
-// Function that returns a list of 6 sample tasks
-// We call this from TaskBoard to get our initial task list
 List<Task> getSampleTasks() {
   return [
-    // Task 1 - HIGH priority, To Do
     Task(
-      id: '1',  // Unique ID for this task
+      id: '1', 
       title: 'Fix login bug',
       description: 'Users can\'t login on mobile devices. Need to check authentication flow and fix token validation issues.',
-      priority: TaskPriority.high,  // This is urgent!
-      status: TaskStatus.toDo,      // Not started yet
+      priority: TaskPriority.high,
+      status: TaskStatus.toDo,
     ),
     
-    // Task 2 - MEDIUM priority, In Progress
     Task(
       id: '2',
       title: 'Update UI spacing',
       description: 'Align header containers evenly and improve overall spacing consistency across all screens.',
-      priority: TaskPriority.medium,  // Moderately important
-      status: TaskStatus.inProgress,   // Currently being worked on
+      priority: TaskPriority.medium,
+      status: TaskStatus.inProgress,
     ),
     
-    // Task 3 - MEDIUM priority, In Progress
     Task(
       id: '3',
       title: 'Write API documentation',
@@ -37,16 +26,14 @@ List<Task> getSampleTasks() {
       status: TaskStatus.inProgress,
     ),
     
-    // Task 4 - LOW priority, To Do
     Task(
       id: '4',
       title: 'Implement dark mode',
       description: 'Add dark mode theme support with toggle switch in settings. Should persist user preference.',
-      priority: TaskPriority.low,   // Not urgent
+      priority: TaskPriority.low,
       status: TaskStatus.toDo,
     ),
     
-    // Task 5 - HIGH priority, To Do
     Task(
       id: '5',
       title: 'Optimize database queries',
@@ -55,22 +42,20 @@ List<Task> getSampleTasks() {
       status: TaskStatus.toDo,
     ),
     
-    // Task 6 - MEDIUM priority, Done
     Task(
       id: '6',
       title: 'Setup CI/CD pipeline',
       description: 'Configure automated testing and deployment pipeline using GitHub Actions for continuous integration.',
       priority: TaskPriority.medium,
-      status: TaskStatus.done,  // This one is completed!
+      status: TaskStatus.done,
     ),
 
-    // Testing Task
     Task(
       id: '7',
       title: 'Setup CI/CD pipeline',
       description: 'Configure automated testing and deployment pipeline using GitHub Actions for continuous integration.',
       priority: TaskPriority.medium,
-      status: TaskStatus.done,  // This one is completed!
+      status: TaskStatus.done,
     ),
   ];
 }

@@ -62,16 +62,18 @@
 
 ### 🚀 Instructions to Run the App
 ```bash
-# Clone the repository
+
+
+# Open cmd and clone the repository
 git clone <repository-url>
 
 # Navigate to the project folder
 cd <project-folder>
 
-# Open the project in VS Code using terminal
+# Open the project in VS Code
 code .
 
-# Install dependencies
+# Open VS terminal and install dependencies
 flutter pub get
 
 # Enable Developer Mode to build with plugins
